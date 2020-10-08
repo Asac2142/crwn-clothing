@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { ReactComponent as Logo } from '../../assests/crown.svg';
+import CartIcon from '../cart-icon/cart-icon.component';
 import { auth } from '../../firebase/firebase.utils';
 import './header.styles.scss';
+import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 
-const Header = ({ currentUser }) => {
-    console.log('current user:', currentUser);
+const Header = ({ currentUser, hidden }) => {
     return (
         <div className='header'>
             <Link className='logo-container' to='/'>
@@ -21,13 +22,20 @@ const Header = ({ currentUser }) => {
                     <div className='option' onClick={() => auth.signOut()}>SIGN OUT</div>
                     :<Link className='option' to='/signin'>SIGN IN</Link>
                 }
-            </div>            
+                <CartIcon />
+            </div>          
+            {
+               hidden ? null : <CartDropdown />
+            }  
         </div>
     )
 };
 
+//cuando veas la funcion "mapStateToProps", esta funcion esta trabajando directamente
+//con el ROOTREDUCER
 const mapStateToProps = state => ({
-    currentUser: state.user.currentUser
+    currentUser: state.user.currentUser,
+    hidden: state.cart.hidden
 });
 
-export default connect(mapStateToProps)(Header) ;
+export default connect(mapStateToProps, null)(Header) ;

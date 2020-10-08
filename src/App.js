@@ -15,14 +15,13 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
   
   componentDidMount() {
-    console.log('PROPS', this.props);
-    const { setCurrentUser } = this.props;
+    const { setCurrentUserXXX } = this.props;
     //here, we can store the user logged in in our state
     this.unsubscribeFromAuth = auth.onAuthStateChanged( async userAuth => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
         userRef.onSnapshot(snapShot => {
-          setCurrentUser({ //aqui estaba setState, pero ahora, usamos Redux
+          setCurrentUserXXX({ //aqui estaba setState, pero ahora, usamos Redux
             currentUser: {              
               id: snapShot.id,
               ...snapShot.data()
@@ -31,7 +30,7 @@ class App extends React.Component {
         });
       } 
       // else {
-        setCurrentUser(userAuth);
+        setCurrentUserXXX(userAuth);
       // }
     });
   }
@@ -57,12 +56,12 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = ({user}) => ({
-  currentUser: user.currentUser
-})
+const mapStateToProps = (state) => ({
+  currentUser: state.user.currentUser
+});
 
 const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
+  setCurrentUserXXX: (user) => dispatch(setCurrentUser(user))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
