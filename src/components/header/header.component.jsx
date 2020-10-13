@@ -1,12 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import { ReactComponent as Logo } from '../../assests/crown.svg';
 import CartIcon from '../cart-icon/cart-icon.component';
-import { auth } from '../../firebase/firebase.utils';
-import './header.styles.scss';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
+import { selectCartHidden } from '../../redux/cart/cart.selectors';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
+import { auth } from '../../firebase/firebase.utils';
+
+import './header.styles.scss';
 
 const Header = ({ currentUser, hidden }) => {
     return (
@@ -33,9 +37,9 @@ const Header = ({ currentUser, hidden }) => {
 
 //cuando veas la funcion "mapStateToProps", esta funcion esta trabajando directamente
 //con el ROOTREDUCER
-const mapStateToProps = state => ({
-    currentUser: state.user.currentUser,
-    hidden: state.cart.hidden
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
+    hidden: selectCartHidden
 });
 
 export default connect(mapStateToProps, null)(Header) ;
